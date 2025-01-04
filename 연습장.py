@@ -1,31 +1,18 @@
-from collections import deque
-queue = deque()
+nums = list(int(input()) for _ in range(9)) 
+nums_sum = []
 
-def BFS(num):
-    ind = 1
-    queue.append(num)
-    while queue:
-        node = queue.popleft()
-        if visited[node]:
-            continue
-        visited[node] = True
-        ans[node] = ind
-        ind += 1
-        for next_node in adj_list[node]:
-            if not visited[next_node]:
-                queue.append(next_node)
+def DFS(start, depth):
+    if depth == 7:
+        if sum(nums_sum) == 100:
+            for j in sorted(nums_sum):
+                print(j)
+            exit()
+        else:
+            return
+    else:
+        for i in range(start, len(nums)):
+            nums_sum.append(nums[i])
+            DFS(i + 1, depth + 1)
+            nums_sum.pop()
 
-N,M,R = map(int,input().split())
-adj_list = [[] for _ in range(N+1)]
-visited = [False] * (N+1)
-ans = [0] * (N+1)
-
-for _ in range(M):
-    a,b = map(int,input().split())
-    adj_list[a].append(b)
-    adj_list[b].append(a)
-for i in adj_list:
-    i = i.sort(reverse=True)
-BFS(R)
-for i in ans[1:]:
-    print(i)
+DFS(0,0)
