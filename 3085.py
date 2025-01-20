@@ -1,34 +1,37 @@
-num = int(input())
-colors = [list(input()) for _ in range(num)]
-ans = 1
+N = int(input())
+colors = list(list(input()) for _ in range(N))
 
-def find_rowed_nums():
-    global ans
-    for i in range(num):
+def count():
+    global ans1, ans2
+    for i in range(N):
         res = 1
-        for j in range(1,num):
+        for j in range(1, N):
             if colors[i][j] == colors[i][j-1]:
                 res += 1
             else:
                 res = 1
-            ans = max(ans, res)
-
-    for i in range(num):
+            ans1 = max(res, ans1)
+    
+    for i in range(N):
         res = 1
-        for j in range(1,num):
+        for j in range(1, N):
             if colors[j][i] == colors[j-1][i]:
                 res += 1
             else:
                 res = 1
-            ans = max(ans, res)
+            ans2 = max(ans2, res)
 
-for i in range(num):
-    for j in range(num-1):
-        colors[i][j], colors[i][j+1] = colors[i][j+1], colors[i][j]
-        find_rowed_nums()
-        colors[i][j], colors[i][j+1] = colors[i][j+1], colors[i][j]
+ans1, ans2 = 1, 1
 
-        colors[j][i] , colors[j+1][i] = colors[j+1][i], colors[j][i]
-        find_rowed_nums()
-        colors[j][i] , colors[j+1][i] = colors[j+1][i], colors[j][i]
-print(ans)
+for i in range(N):
+    for j in range(N):
+        if i != N-1:
+            colors[i][j], colors[i+1][j] = colors[i+1][j], colors[i][j]
+            count()
+            colors[i][j], colors[i+1][j] = colors[i+1][j], colors[i][j]
+        if j != N-1:
+            colors[i][j], colors[i][j+1] = colors[i][j+1], colors[i][j]
+            count()
+            colors[i][j], colors[i][j+1] = colors[i][j+1], colors[i][j]
+
+print(max(ans1,ans2))
