@@ -1,16 +1,16 @@
 a,b = map(int,input().split())
 ans = []
 
-def DFS():
+def DFS(num):
     global ans
 
     if len(ans) == b:
         print(*ans)
         return
     
-    for i in range(1, a + 1):
+    for i in range(num, a + 1):
         if not i in ans:
             ans.append(i)
-            DFS()
+            DFS(i)
             ans.pop()
-DFS()
+DFS(1)

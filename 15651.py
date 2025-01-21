@@ -9,8 +9,7 @@ def DFS():
         return
     
     for i in range(1, a + 1):
-        if not i in ans:
-            ans.append(i)
-            DFS()
-            ans.pop()
+        ans.append(i)
+        DFS()
+        ans.pop()
 DFS()
