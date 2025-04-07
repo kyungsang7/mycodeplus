@@ -1,34 +1,36 @@
-import copy
-
-N = int(input())
-judge = list(input().split())
-
-nums = []
-ans = []
-ans_min = []
-
-def back_track():
-    global nums, ans, ans_min
-    if len(nums) == N + 1:
-        for i in range(N):
-            if judge[i] == '>':
-                if not nums[i] > nums[i + 1]:
-                    return
-            else:
-                if not nums[i] < nums[i + 1]:
-                    return
-        if not ans:
-            ans_min = copy.deepcopy(nums)
-
-        ans = copy.deepcopy(nums)
+def DFS(ope):
+    global recent, visited
+    if ope == k:
+        ans.append(''.join(str(s) for s in recent))
         return
     
     for i in range(10):
-        if not i in nums:
-            nums.append(i)
-            back_track()
-            nums.pop()
+        if not visited[i]:
+            if operation[ope] == '>' and recent[-1] > i:
+                recent.append(i)
+                visited[i] = True
+                DFS(ope + 1)
+                recent.pop()
+                visited[i] = False
 
-back_track()   
-print(''.join(map(str, ans)))
-print(''.join(map(str, ans_min)))
+            elif operation[ope] == '<' and recent[-1] < i:
+                recent.append(i)
+                visited[i] = True
+                DFS(ope + 1)
+                recent.pop()
+                visited[i] = False
+
+
+
+k = int(input())
+operation = list(input().split())
+ans = []
+
+for i in range(10):
+    recent = [i]
+    visited = [False] * 10
+    visited[i] = True
+    DFS(0)
+    
+print(ans[-1])
+print(ans[0])

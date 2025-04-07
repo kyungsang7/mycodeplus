@@ -1,31 +1,31 @@
-N = int(input())
-pow = list(list(map(int,input().split())) for _ in range(N))
-nums = set([i for i in range(N)])
+def calculate():
+    true_team, false_team = 0, 0
+    for i in range(N):
+        for j in range(N):
+            if visited[i] == visited[j]:
+                if visited[i]:
+                    true_team += adj[i][j]
+                else:
+                    false_team += adj[i][j]
+    
+    return abs(true_team - false_team)
 
-team = []
-ans = 10 ** 4
-
-def Recrusive_call(num):
-    global team, ans
-
-    if len(team) == N // 2:
-        p1 = calculate_team_power(team)
-        p2 = calculate_team_power(list(nums - set(team)))
-        ans = min(ans, abs(p1 - p2))
+def get_nums(count, idx):
+    global ans
+    if count == N // 2:
+        ans = min(ans, calculate())
         return
     
-    for i in range(num, N - 1):
-        team.append(i)
-        Recrusive_call(i + 1)
-        team.pop()
+    for i in range(idx, N):
+        visited[i] = True
+        get_nums(count + 1, i + 1)
+        visited[i] = False
 
-def calculate_team_power(power):
-    p = 0
-    for i in range(N // 2 - 1):
-        for j in range(i + 1, N // 2):
-            p += pow[power[i]][power[j]]
-            p += pow[power[j]][power[i]]
-    return p
+N = int(input())
+adj = list(list(map(int,input().split())) for _ in range(N))
+visited = [False] * N
+ans = float('inf')
 
-Recrusive_call(0)
+get_nums(0, 0)
+
 print(ans)
